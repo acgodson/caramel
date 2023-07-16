@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "caramelplugin",
+  "private_key_id": "744c30121ca7546552af9bc44400ab80dea41497",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDcIYQbyW4LOyd9\nkLEtbEZKr9Um9w/IhuZDWc98nn98McIPsKueEuSWU4KMKQA+M1KFexGTk+8G0bqg\nU+El100Ea2YjW5sc89JO/1eXsxMFalmi8shnWby5yyfvr/xNEpL9sSXLVrGlsOr+\nVhe2eHnQ4C6Z4FTE5e/bqWj221/hJ3C2ms9Yk+6LDtrWFLXWHq83YD2LdbBhA4fe\nGo96k5pv7+ujTx5b1JwUwPJfAHIdBidTsDLaDdbtQ/F+khtCMiJHTGCX60xD0ZYu\nEd9azAm8LgYDUGRsfn6Tq9c1ZwLPcbbiChnJ/uHTGD+UishietzI1wmT/vGAejEH\nBD4NMKLtAgMBAAECggEAGJ9NGhiRTQNMWwCsuMJ0KFV7l5Sp+MmSBvWMPkmyQ8+C\n/+NIhvFhDSmBIDFT3CE8eT63TBUPdulNoTJQrD1lWXmz3n+YHYhuPTTVdNvsZD4t\nkYrrfJfugq+lI2vBYlOSCntemVx0mW5tEo7JrzjRk1oIDGEpyi5YAm90FKycEGB2\nWOjnTNEcxX7/HCq8Dd2EmgE8wDNHrA13hP3QAZ6NaGXuttSagJm1+cjBzcEMMrN6\nH72LxdJbcoqgNtGeWSSavBbBzhheBf0t80OEAJWaWW+nxzfBy10mSYhVzUOcdxcr\n58yEkBihzzMk5cXiFcseMU3CoYocpZH7tWTPk421FwKBgQD17ezU4WxxQ2uldbE9\nkfYd+lnJNY+Ax9ojN6B+usuabUAEZgOonjzwimo7a1LVWQQPoGG+jhdFhTt3onRv\nPCSslZkRuInL2eItE4zoPErEjtZWtoSVGPkvSFHlXVj6HNZJlH/Gd5mSe0dySQux\nRfN+czvlNMhtNeAa9cnjcRvoVwKBgQDlJSVWISkTRL8/ZMJhs+iAxYaYC8rYk7nz\n4wDmzzuBavi2g2QIpxzB5BlevK4nxC06Y269YHnDQwwrO8rLetFhNI490WxbwAed\nMU69G/gqnfwylBJny0WxZym0dsxoC/ghDOs0nvTqNo2x3bmXLxDKEsQOYLBNgkyD\nboFnrOvUWwKBgQCMiTE8mbFJrFh4jiAB6kY17VmftN7TneFXHLO3l/E/x0y89rsC\ngaKbZs28NOF6D8tVTrZsmXBNBwzrmcdlxX3Drh1x1f3QoysvzStJjyK+3k038kcj\nmMjVL0O1ibmN/Cqsk5LNDI2S+qXidkGbRTkXOqywl5AtcIsnfOuo8HsdMwKBgF6j\nP89ZtLgzjXUmLS3i+uSsL9F+FVHreUJj/8xTzHS/9GaUz2zPcA4YIe5BqP/dgvx5\ncpQeU0u01kLI2BG/8Nfft9uKMeGW5s4iPi3WbmFTjIRrKUra5jbFr7DL29IhF2K3\nDjFWcTqGO3E5bNwm4R1EMNrrTgVFCkrCCgoCnge/AoGAavznSTBtDFACqrReAbSh\nEdMXyV4iG6CCMDJUlq6DDoOmMq5rxGyTXrywAkq/d2FJIOUTym43FEYNaDVo/eeM\nQKpSXo0F4Ct0wqGhaVd31H2R+6a9SMffdJLREjj+sf99AADzWCFzTwBVlH609/SG\nt024erj/YSdY8vltZV0QNzM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-kkc0k@caramelplugin.iam.gserviceaccount.com",
+  "client_id": "100718763491043565307",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-kkc0k%40caramelplugin.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
