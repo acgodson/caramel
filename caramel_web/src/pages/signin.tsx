@@ -11,8 +11,8 @@ import {
     HStack,
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
-import { GoogleAuthProvider } from "firebase/auth";
-import { getAuth, getRedirectResult, signInWithRedirect, signInWithPopup } from "firebase/auth";
+import { EmailAuthProvider, GoogleAuthProvider, UserCredential, reauthenticateWithCredential, signInWithCredential } from "firebase/auth";
+import { getAuth, getRedirectResult, signInWithRedirect, signInWithPopup, User } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useCreateAccount } from "@/hooks/createaccount";
@@ -21,6 +21,9 @@ import { useTransaction } from "@/contexts/TransactionContext";
 import { createUser } from "@/db/firestore";
 import { checkUserExists } from "@/components/controllers/authz";
 import { AES } from "crypto-js";
+import { MyUserCredential } from "@/components/controllers/helpers";
+
+
 
 
 const auth = getAuth();
@@ -35,23 +38,22 @@ const Signin = () => {
 
 
     useEffect(() => {
-        auth.onAuthStateChanged((authUser) => {
-            if (!authUser && !loading) {
-                setTimeout(() => {
-                    const appParam = router.query.app;
-                    if (appParam && appParam === "true") {
-                        console.log(appParam);
-                        console.log("opening google");
-                        // Call the signInWithGoogle function
-                        signInWithGoogle();
-                    }
-                }, 10); // Adjust the delay as needed
+
+        setTimeout(() => {
+            const appParam: any = router.query._user;
+            if (appParam && !loading) {
+                // console.log(appParam);
+                console.log("opening google");
+                // Call the signInWithGoogle function
+                const { _user, password } = router.query;
+                //@ts-ignore
+                signWithCredential(_user, password);
             }
-        });
+        }, 10); // Adjust the delay as needed
+
     },);
 
     const signInWithGoogle = async () => {
-
         setLoading(true);
         try {
             const provider = new GoogleAuthProvider();
@@ -77,7 +79,7 @@ const Signin = () => {
                         router.push("home");
                     } else {
                         // Prompt user to enter password
-                        const password = window.prompt("Enter your password:");
+                        const password = window.prompt("Enter Chosen password:");
 
                         if (password) {
                             const {
@@ -159,129 +161,108 @@ const Signin = () => {
 
 
 
-    //   Listen to UnAuthStateChange
-    // useEffect(() => {
-    //     auth.onAuthStateChanged((authUser) => {
+    const signWithCredential = async (_user: any, password: string) => {
+        setLoading(true)
+        //signing in with user credental
+        const auth = getAuth();
+
+        console.log(_user.email,)
+        // Extract the necessary properties from the string
+        const regex = /(\w+):\s?([^),]+)/g;
+        let match;
+        const userData: any = {};
+        while ((match = regex.exec(_user))) {
+            const key = match[1];
+            const value = match[2];
+
+            userData[key] = value;
+        }
+        const userJSON = JSON.stringify(userData);
+        const myUserCredential: any = MyUserCredential.fromJSON(JSON.parse(userJSON));
+        const Authcredential = EmailAuthProvider.credential(
+            myUserCredential.user.email,
+            password
+        )
+        const credential: any = await signInWithCredential(auth, Authcredential);
+        console.log("user from credentials;", credential);
+
+        if (credential) {
+            const accessToken = credential.user.accessToken;
+            const idToken = credential.user.idToken;
+            const user = credential.user;
+            const userData = await mapUserData(user);
+            setUserCookie(userData);
+
+            const { keyExists, snapshot } = await checkUserExists(user.email!);
+
+            if (keyExists) {
+                localStorage.setItem("caramel-user", JSON.stringify(snapshot));
+                setUserObject(snapshot);
+                // retrieve  keys from local storage
+
+                // take user to home
+                router.push("home");
+            } else {
+                // Prompt user to enter password
+                // const password = window.prompt("Enter your password:");
+
+
+                const {
+                    account,
+                    creationTxId,
+                    publicKey,
+                    privateKey,
+                    signatureAlgorithm,
+                    hashAlgorithm,
+                } = await createAccount();
+
+                // Encrypt the private key using the password and private nonce
+                const encryptedPrivateKey = AES.encrypt(privateKey, password).toString();
+
+
+                if (account) {
+                    setDefaultAccount(account);
+                    const dbObj = {
+                        email: user.email,
+                        default: 0,
+                        account,
+                        creationTxId,
+                        keys: [
+                            {
+                                pubKey: publicKey,
+                                privkey: encryptedPrivateKey,
+                                signatureAlgorithm,
+                                hashAlgorithm,
+                            },
+                        ],
+                    };
+
+                    await createUser(user.uid!, dbObj);
+                    localStorage.setItem("caramel-user", JSON.stringify(dbObj));
+                    setUserObject(dbObj);
+                }
+
+                const signInObj: any = {
+                    accessToken,
+                    idToken,
+                    account,
+                    creationTxId,
+                    publicKey,
+                    encryptedPrivateKey,
+                    signatureAlgorithm,
+                    hashAlgorithm,
+                };
+
+                const queryString = new URLSearchParams(signInObj).toString();
+                const routeUrl = `/login-success?${queryString}`;
+                router.push(routeUrl);
+
+            }
+        }
 
 
 
-    //         if (authUser) {
-    //             getRedirectResult(auth)
-    //                 .then(async (result) => {
-
-
-    //                     // This gives you a Google Access Token. You can use it to access Google APIs.
-    //                     const credential: any = GoogleAuthProvider.credentialFromResult(result!);
-    //                     const token = credential.accessToken;
-
-    //                     // The signed-in user info.
-    //                     const user = result!.user;
-    //                     // IdP data available using getAdditionalUserInfo(result)
-
-    //                     console.log(user)
-
-    //                     if (result) {
-    //                         const credential = GoogleAuthProvider.credentialFromResult(result);
-
-    //                         if (credential) {
-    //                             const accessToken = credential.accessToken;
-    //                             const idToken = credential.idToken;
-    //                             const user = result.user;
-    //                             const userData = await mapUserData(user);
-    //                             setUserCookie(userData);
-
-    //                             const { keyExists, snapshot } = await checkUserExists(user.email!);
-
-    //                             if (keyExists) {
-    //                                 localStorage.setItem("caramel-user", JSON.stringify(snapshot));
-    //                                 setUserObject(snapshot);
-    //                                 // retrieve  keys from local storage
-
-    //                                 // take user to home
-    //                                 router.push("home");
-    //                             } else {
-    //                                 // Prompt user to enter password
-    //                                 const password = window.prompt("Enter your password:");
-
-    //                                 if (password) {
-    //                                     const {
-    //                                         account,
-    //                                         creationTxId,
-    //                                         publicKey,
-    //                                         privateKey,
-    //                                         signatureAlgorithm,
-    //                                         hashAlgorithm,
-    //                                     } = await createAccount();
-
-    //                                     // Encrypt the private key using the password and private nonce
-    //                                     const encryptedPrivateKey = AES.encrypt(privateKey, password).toString();
-
-
-    //                                     if (account) {
-    //                                         setDefaultAccount(account);
-    //                                         const dbObj = {
-    //                                             email: user.email,
-    //                                             default: 0,
-    //                                             account,
-    //                                             creationTxId,
-    //                                             keys: [
-    //                                                 {
-    //                                                     pubKey: publicKey,
-    //                                                     privkey: encryptedPrivateKey,
-    //                                                     signatureAlgorithm,
-    //                                                     hashAlgorithm,
-    //                                                 },
-    //                                             ],
-    //                                         };
-
-    //                                         await createUser(user.uid!, dbObj);
-    //                                         localStorage.setItem("caramel-user", JSON.stringify(dbObj));
-    //                                         setUserObject(dbObj);
-    //                                     }
-
-    //                                     const signInObj: any = {
-    //                                         accessToken,
-    //                                         idToken,
-    //                                         account,
-    //                                         creationTxId,
-    //                                         publicKey,
-    //                                         encryptedPrivateKey,
-    //                                         signatureAlgorithm,
-    //                                         hashAlgorithm,
-    //                                     };
-
-    //                                     const queryString = new URLSearchParams(signInObj).toString();
-    //                                     const routeUrl = `/login-success?${queryString}`;
-    //                                     router.push(routeUrl);
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-
-
-    //                     // ...
-    //                 }).catch((error) => {
-    //                     // Handle Errors here.
-    //                     const errorCode = error.code;
-    //                     const errorMessage = error.message;
-    //                     // The email of the user's account used.
-    //                     const email = error.customData.email;
-    //                     // The AuthCredential type that was used.
-    //                     const credential = GoogleAuthProvider.credentialFromError(error);
-    //                     // ...
-    //                 });
-    //         }
-
-    //     });
-    // }, []);
-
-
-
-
-
-
-
-
+    };
 
 
     if (loading) {

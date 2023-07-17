@@ -22,3 +22,50 @@ export const bufferToDataURI = (buffer: any) => {
   const base64 = btoa(bytes.map((byte) => String.fromCharCode(byte)).join(""));
   return `data:image/png;base64,${base64}`;
 }
+
+
+
+export class MyUserCredential {
+  user: any;
+  constructor({ user }: any) {
+    this.user = user;
+  }
+
+  static fromJSON(json: {}) {
+    const user  = json;
+    const myUser = User.fromJSON(user);
+    return new MyUserCredential({ user: myUser });
+  }
+}
+
+class User {
+  displayName: any | null;
+  email: any;
+  isEmailVerified: any;
+  metadata: any;
+  isAnonymous: any;
+  phoneNumber: any;
+  refreshToken: any;
+  photoURL: any | null;
+  providerData: any;
+  tenantId: any;
+  uid: any;
+  constructor({  displayName, email, isEmailVerified, isAnonymous, metadata, phoneNumber, providerData, refreshToken, photoURL, tenantId, uid }: any) {
+    this.displayName = displayName;
+    this.email = email;
+    this.isEmailVerified = isEmailVerified;
+    this.isAnonymous = isAnonymous;
+    this.metadata = metadata;
+    this.phoneNumber = phoneNumber;
+    this.photoURL = photoURL;
+    this.providerData = providerData;
+    this.refreshToken = refreshToken;
+    this.tenantId = tenantId;
+    this.uid = uid;
+  }
+
+  static fromJSON(json: any) {
+    const {displayName,  email, isEmailVerified, isAnonymous, metadata, phoneNumber,photoURL,  providerData, refreshToken, tenantId, uid } = json;
+    return new User({ displayName, email, isEmailVerified, isAnonymous, metadata, phoneNumber, photoURL, providerData, refreshToken, tenantId, uid });
+  }
+}

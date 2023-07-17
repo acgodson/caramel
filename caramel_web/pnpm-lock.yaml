@@ -10333,7 +10333,7 @@ packages:
     resolution: {integrity: sha512-E3C3X1skWBdBzwpOUbmXG8SgH6BtsluSMe+s6rRcujNKG1DGi8uIfhdhszkgDpAsMoE55hwqRUzeXCmETDBpTg==}
     dependencies:
       shell-quote: 1.8.1
-      ws: 7.5.9
+      ws: 7.4.6
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -10507,7 +10507,7 @@ packages:
     dependencies:
       object-assign: 4.1.1
       react: 18.2.0
-      react-is: 18.2.0
+      react-is: 16.13.1
     dev: false
 
   /react-style-singleton@2.2.1(@types/react@18.2.14)(react@18.2.0):
@@ -11091,6 +11091,7 @@ packages:
   /source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dev: false
 
   /source-map@0.7.4:
