@@ -25,14 +25,6 @@ class MyApp extends StatelessWidget {
   // Application root
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-        // buttonColor: Colors.aRmber
-      ),
-      home: const OCDApp(),
-    );
+    return const OCDApp();
   }
 }

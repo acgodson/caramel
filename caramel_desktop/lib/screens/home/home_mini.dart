@@ -1,3 +1,5 @@
+import 'package:caramel_desktop/services/auth_service.dart';
+import 'package:caramel_desktop/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -13,6 +15,11 @@ class HomePage extends StatelessWidget {
     required this.walletAddress,
     required this.balance,
   }) : super(key: key);
+
+  void _signOut(BuildContext context) async {
+    await AuthService().signOut();
+    Navigator.pushNamed(context, OCDRoutes.auth);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +105,16 @@ class HomePage extends StatelessWidget {
                         label: 'Settings',
                       ),
                     ],
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      onPressed: () =>
+                          _signOut(context), // Call the sign-out function
+                      child: const Text("Sign out"),
+                    ),
                   ),
                 ),
               ],

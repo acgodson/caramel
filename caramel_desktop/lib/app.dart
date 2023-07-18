@@ -9,6 +9,7 @@ import 'screens/auth/signin.dart';
 import 'screens/auth/wait.dart';
 import 'screens/home/home_mini.dart';
 import 'services/auth_service.dart';
+import 'utils/keys.dart';
 import 'utils/localization.dart';
 import 'utils/routes.dart';
 import 'widgets/home_controller.dart';
@@ -29,7 +30,12 @@ class _OCDAppState extends State<OCDApp> {
       auth: AuthService(),
       db: FirebaseFirestore.instance,
       child: MaterialApp(
+          theme: ThemeData(
+            primarySwatch: Colors.amber,
+          ),
           debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: snackbarKey,
+          navigatorKey: navigatorKey,
           localizationsDelegates: [
             OCDLocalizationsDelegate(),
           ],
@@ -52,10 +58,10 @@ class _OCDAppState extends State<OCDApp> {
                   switch (MultiWindow.current.key) {
                     case 'main':
                       return const HomeController();
-                    // case 'signin':
-                    //   return const WaitPage(
-                    //     title: 'time to sign in',
-                    //   );
+                    case 'signin':
+                      return const WaitPage(
+                        title: 'time to sign in',
+                      );
                     default:
                       return const HomeController();
                   }

@@ -24,8 +24,9 @@ class AuthService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+
       Navigator.push(navigatorKey.currentState!.overlay!.context,
-          MaterialPageRoute(builder: (context) => HomeController()));
+          MaterialPageRoute(builder: (context) => const HomeController()));
       print("User is signed in");
     } on FirebaseAuthException catch (e) {
       snackbarKey.currentState!.showSnackBar(SnackBar(
@@ -61,48 +62,24 @@ class AuthService {
     return false;
   }
 
-  Future signUpUser(String email, String password, String country) async {
+  Future<UserCredential?> signUpUser(String email, String password) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      if (userCredential.user!.uid!.isNotEmpty) {
-        final uid = userCredential.user!.uid;
 
-        //Save a default theme provider
-        // StorageManager.readData('themeMode').then((value) {
-        //   if (value == null) {
-        //     StorageManager.saveData('themeMode', 'light');
-        //   }
-        // });
-        //Create user info in database
-        // FirebaseFirestore.instance.collection("users").doc(uid).set(UserData(
-        //         first: "",
-        //         last: "",
-        //         user: "",
-        //         email: email,
-        //         phone: "",
-        //         country: FirebaseFirestore.instance
-        //             .collection("countries")
-        //             .doc(uid)
-        //             .path,
-        //         date: "",
-        //         tags: ["CAD", "USD", "GDP", "EUR", "NGN"],
-        //         socials: [],
-        //         createdAt: DateTime.now().toString())
-        //     .toJson());
+//let's launch the outer window
 
-        Navigator.pushNamed(
-            navigatorKey.currentState!.overlay!.context, OCDRoutes.home);
-      }
+
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       snackbarKey.currentState!.showSnackBar(SnackBar(
-          content: Text(
-            e.message!,
-          ),
-          duration: Duration(milliseconds: 4000)));
+        content: Text(e.message!),
+        duration: const Duration(milliseconds: 4000),
+      ));
     } catch (e) {
       print(e);
     }
+    return null; // Return null in case of any error
   }
 
   Future getCurrentUID() async {

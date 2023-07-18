@@ -13,6 +13,7 @@ class _MiniAppBarState extends State<MiniAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
@@ -30,11 +31,25 @@ class _MiniAppBarState extends State<MiniAppBar> {
                   selectedNetwork = newValue!;
                 });
               },
-              items:
-                  <String>['Flow Testnet', 'Flow Mainnet'].map((String value) {
+              items: <String>['Flow Testnet'].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/flow_logo.png',
+                        width: 18,
+                        height: 18,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 3.0),
+                        child: Text(
+                          value,
+                          style: const TextStyle(fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }).toList(),
             ),
