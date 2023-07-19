@@ -1,14 +1,19 @@
-# Welcome to Caramel
-  Private NFTs of medical imaging on Flow Blockchain for verifiable and traceable data consumers
+# Welcome to Caramel. 
+## Traceable and Verifiable distribution of NFTs
+
+> Mint and send private  NFTs such as medical imaging on Flow Blockchain for licensed data consumers or recipient.
 
 
+👉 Jump to [Video Demo ]() || 
+📃 [Pitch Deck]()
 
 
-
-## Caramel fkow
-
+## Caramel Workflow
 
 ![flow](caramel_web/public/flow.png)
+
+- [Desktop/Hard Wallet]() -- > Recipient
+- [Web dAPP]() -- > Publisher or Sender
 
 1. Sender: Enter recipient's wallet or email  or userID, and upload the image.
 2. Sender: Upload image.
@@ -21,6 +26,6 @@
 9. Recipient: Decrypt the image with the private key.
 10. Recipient: Display the decrypted image.
 
-               
-            
+
+## Overview Flow Blockchain            
 
