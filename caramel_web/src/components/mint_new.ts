@@ -38,11 +38,7 @@ export const authorizationFunction = async (account: any) => {
 export const MintNewNFT = async (addr: string, hash: string) => {
   let transactionId;
   const CODE = mintNFT;
-  // console.log(hash);
-  // console.log(CODE);
   const name = "test images";
-  //  imageHash: string,
-
   try {
     transactionId = await fcl
       .send([
@@ -72,9 +68,6 @@ export const MintNewNFT = async (addr: string, hash: string) => {
 export const StoreCollection = async () => {
   let transactionId;
   const CODE = init_collection;
-
-  const args = { bbb: "hhhfh" };
-
   try {
     transactionId = await fcl
       .send([
@@ -94,27 +87,4 @@ export const StoreCollection = async () => {
   }
 };
 
-export const CreatSharePool = async () => {
-  let transactionId;
-  const CODE = store_share_pool;
 
-  const args = { bbb: "hhhfh" };
-
-  try {
-    transactionId = await fcl
-      .send([
-        fcl.transaction(CODE),
-        fcl.payer(fcl.authz),
-        fcl.authorizations([fcl.authz]),
-        fcl.proposer(fcl.authz),
-        fcl.limit(9999),
-      ])
-      .then(fcl.decode);
-
-    console.log(transactionId);
-    return fcl.tx(transactionId).onceSealed();
-  } catch (e) {
-    console.error(e);
-    return 0.0;
-  }
-};

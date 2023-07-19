@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AddIcon, ChevronDownIcon, StarIcon } from "@chakra-ui/icons";
 import { ec as EC } from "elliptic";
 import { mintNFT } from "@/cadence/transactions/mint_nft"
-import { CreatSharePool, MintNewNFT, StoreCollection } from "@/components/mint_new"
+import { MintNewNFT, StoreCollection } from "@/components/mint_new"
 import axios from "axios";
 import { encryptECC } from "./controllers/encryption";
 import { FiUploadCloud } from "react-icons/fi";
@@ -176,7 +176,7 @@ export default function SideBarTab() {
             console.log("no user signed in")
         }
 
-        if (!validRecipient) {
+        if (send && !validRecipient) {
             console.log("invalid recipient")
         }
 
@@ -305,7 +305,7 @@ export default function SideBarTab() {
                     onClick={async () => {
                         fcl.unauthenticate();
                         localStorage.clear()
-                        router
+                        router.push("/signin")
                     }}
                 >Sign out</Button>
 

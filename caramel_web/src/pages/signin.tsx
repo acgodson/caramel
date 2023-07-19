@@ -34,7 +34,7 @@ const Signin = () => {
     const toast = useToast();
     const router = useRouter()
     const [loading, setLoading] = useState(false);
-    const { status, createAccount, createPublisher } = useCreateAccount()
+    const { status, isLoading, createAccount, createPublisher } = useCreateAccount()
     const { setDefaultAccount, mapUserData, setUserCookie, setUserObject } = useTransaction();
 
     useEffect(() => {
@@ -263,7 +263,6 @@ const Signin = () => {
 
 
     const signInWihDiscovery = () => {
-
     }
 
 
@@ -308,11 +307,13 @@ const Signin = () => {
                         alignItems={"center"}
                         justifyContent={"center"}
                     >
+                        <Text>Sign in with Flipper extension</Text>
 
                         <Button
                             h="50px"
                             color="#f38c00"
                             bg="black"
+                            isLoading={isLoading}
                             _hover={{
                                 color: "black",
                                 bg: "#f38c00",
@@ -325,7 +326,7 @@ const Signin = () => {
                             onClick={createPublisher}
 
                         >
-                            Publish Collection
+                            Publish in Collection
                         </Button>
 
 
@@ -333,8 +334,11 @@ const Signin = () => {
 
                         <Box />
 
-                        <Text>Publish Private NFTs and
-                            <br />  invite recipients  to view collection</Text>
+                        <Center>
+                            <Text
+                                fontStyle={"italic"}
+                            >Mint Private NFT on Flow Blockchain...</Text>
+                        </Center>
 
                     </VStack>
                 </Box>

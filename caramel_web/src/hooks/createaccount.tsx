@@ -7,11 +7,16 @@ import { useRouter } from "next/router";
 import { prependUserDomainTag, toHex } from "@/components/controllers/helpers";
 import { sign } from "@/components/controllers/signatures";
 import { checkUserExists } from "@/components/controllers/authz";
+import { StoreCollection } from "@/components/mint_new";
+import { useToast } from "@chakra-ui/react";
+
 
 
 export function useCreateAccount() {
     const [status, setStatus] = useState<boolean>(false);
     const { setPublisher, publisher } = useTransaction()
+    const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -40,10 +45,27 @@ export function useCreateAccount() {
     }
 
     const createPublisher = async () => {
-        await login();
-        fcl.currentUser().subscribe(setPublisher);
-        //sign user from extension
-        router.push("/home")
+        setIsLoading(true)
+        try {
+            await login();
+            fcl.currentUser().subscribe(setPublisher);
+            const txn = await StoreCollection()
+            setIsLoading(false)
+            //sign user from extension
+            if (txn) {
+                router.push("/home")
+            }
+        } catch (e) {
+            setIsLoading(false)
+            toast({
+                title: "User collection failed to create",
+                status: "error",
+                duration: 3000,
+                position: "top"
+            })
+        }
+
+
     }
 
     const createAccount = async () => {
@@ -60,9 +82,7 @@ export function useCreateAccount() {
             hashAlgorithm: "SHA3_256",
         };
 
-        const url =
-            "http://localhost:8888/";
-        "https://hardware-wallet-api-testnet.staging.onflow.org/accounts";
+        const url = "https://hardware-wallet-api-testnet.staging.onflow.org/accounts";
 
         try {
             let response = await fetch(url, {
@@ -123,14 +143,8 @@ export function useCreateAccount() {
     return {
         status,
         createAccount,
-        createPublisher
+        createPublisher,
+        isLoading
     };
 }
 
-
-
-// Private Key              212d41f01a84928f5d2a5976a0cc491dea044608baf4759c310de9e512f8f266 
-// Public Key               99189a934e2875dc12e7f48def93b4aabc0495e1a0f808eca7a3b2f8e2fdbc3c5a844f78d818fa5edf1a9912f6df49823a0c3528ff58a30f3970e1780940e4d0 
-// Mnemonic                 tooth cause nose banner turn multiply someone cat sphere december shrug valley 
-// Derivation Path          m/44'/539'/0'/0/0 
-// Signature Algorithm      ECDSA_P256
