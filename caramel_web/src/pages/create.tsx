@@ -86,17 +86,7 @@ const CreateAccount = () => {
             });
             account = await response.json();
             console.log(account)
-            // await validateFlowAccountInfo(account.address, privKey, keyID);
-            // const accountInfo = await fcl
-            // .send([fcl.getAccount(account.address)])
-            // .then(fcl.decode);
-
-
-
-            // const keys = accountInfo.keys;
-            // console.log("keys", keys)
-            // const selectedKey = keys[keyID];
-            // console.log("selected key", selectedKey)
+          
 
             const object = {
                 account: account.address,

@@ -17,8 +17,6 @@ export default function DashboardLayout({ children }: ReactNode | any) {
 
             >
 
-
-
                 <Box w="100%"
                     overflowY={"auto"}
                     css={{
@@ -85,7 +83,7 @@ export default function DashboardLayout({ children }: ReactNode | any) {
                                 <SideBarTab />
                             </Box>
 
-                        </VStack>
+                        </VStack> 
 
                     </VStack>
 

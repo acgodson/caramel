@@ -9,6 +9,7 @@ import cookies from 'js-cookie';
 import { useRouter } from 'next/router.js';
 import crypto from "crypto"
 import { initFirebase } from "@/config";
+import * as fcl from "@onflow/fcl";
 
 
 
@@ -21,8 +22,9 @@ export const useTransaction = () => useContext<any>(TransactionContext);
 initFirebase();
 
 export default function TransactionProvider({ children }: any) {
+  const [publisher, setPublisher] = useState("");
   const [transactionInProgress, setTransactionInProgress] = useState(false);
-  const [defaultAccount, setDefaultAccount] = useState("")
+  const [defaultAccount, setDefaultAccount] = useState<string | null>(null)
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [txId, setTxId] = useState("");
   const auth = getAuth();
@@ -124,14 +126,24 @@ export default function TransactionProvider({ children }: any) {
   }, []);
 
 
-  // Listen to UnAuthStateChange
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((authUser) => {
-  //     if (!authUser) {
-  //       router.push('/signin');
-  //     }
-  //   });
-  // }, []);
+
+  useEffect(() => {
+    const storage = localStorage.getItem("caramel-user");
+    if (storage) {
+      console.log(JSON.parse(storage))
+      setDefaultAccount(JSON.parse(storage).account)
+    }
+
+  }, [])
+
+
+  useEffect(() => {
+
+    fcl.currentUser().subscribe(setPublisher)
+
+  }, [])
+
+
 
 
   const value = {
@@ -155,6 +167,8 @@ export default function TransactionProvider({ children }: any) {
     setError,
     submitting,
     setSubmitting,
+    setPublisher,
+    publisher
   };
 
   return (

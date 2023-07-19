@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/lib/flowAccount.unit.test.js", "src/lib/flowPubKey.unit.test.js", "src/lib/keyVault.unit.test.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/lib/flowAccount.unit.test.js", "src/lib/flowPubKey.unit.test.js", "src/lib/keyVault.unit.test.js", "src/components/mint_new.js"],
   "exclude": ["node_modules"]
 }

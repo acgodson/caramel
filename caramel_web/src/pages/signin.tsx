@@ -9,11 +9,13 @@ import {
     Icon,
     Button,
     HStack,
+    Spinner,
+    Divider,
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
-import { EmailAuthProvider, GoogleAuthProvider, UserCredential, reauthenticateWithCredential, signInWithCredential } from "firebase/auth";
-import { getAuth, getRedirectResult, signInWithRedirect, signInWithPopup, User } from "firebase/auth";
-import { FaGoogle } from "react-icons/fa";
+import { EmailAuthProvider, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { getAuth, signInWithPopup, } from "firebase/auth";
+import { FaGoogle, FaRocket } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useCreateAccount } from "@/hooks/createaccount";
 import { account } from "@onflow/fcl";
@@ -30,28 +32,22 @@ const auth = getAuth();
 
 const Signin = () => {
     const toast = useToast();
-
     const router = useRouter()
     const [loading, setLoading] = useState(false);
-    const { status, createAccount } = useCreateAccount()
-    const { setDefaultAccount, mapUserData, setUserCookie, setUserObject } = useTransaction()
-
+    const { status, createAccount, createPublisher } = useCreateAccount()
+    const { setDefaultAccount, mapUserData, setUserCookie, setUserObject } = useTransaction();
 
     useEffect(() => {
-
         setTimeout(() => {
             const appParam: any = router.query._user;
             if (appParam && !loading) {
-                // console.log(appParam);
-                console.log("opening google");
-                // Call the signInWithGoogle function
                 const { _user, password } = router.query;
                 //@ts-ignore
                 signWithCredential(_user, password);
             }
         }, 10); // Adjust the delay as needed
-
     },);
+
 
     const signInWithGoogle = async () => {
         setLoading(true);
@@ -82,6 +78,7 @@ const Signin = () => {
                         const password = window.prompt("Enter Chosen password:");
 
                         if (password) {
+
                             const {
                                 account,
                                 creationTxId,
@@ -90,6 +87,8 @@ const Signin = () => {
                                 signatureAlgorithm,
                                 hashAlgorithm,
                             } = await createAccount();
+
+                            console.log(privateKey)
 
                             // Encrypt the private key using the password and private nonce
                             const encryptedPrivateKey = AES.encrypt(privateKey, password).toString();
@@ -158,8 +157,6 @@ const Signin = () => {
             });
         }
     };
-
-
 
     const signWithCredential = async (_user: any, password: string) => {
         setLoading(true)
@@ -265,10 +262,17 @@ const Signin = () => {
     };
 
 
+    const signInWihDiscovery = () => {
+
+    }
+
+
     if (loading) {
         return (
             <Layout title={"Caramel"}>
                 <Center h="100vh">
+                    <Spinner />
+                    <br />
                     <Text>Authenticating User...</Text>
                 </Center>
             </Layout>
@@ -298,14 +302,13 @@ const Signin = () => {
                     alignItems={"center"}
                     justifyContent={"space-between"}
                 >
-                    <Box
+                    <VStack
                         w="100%"
                         h="100%"
-                        flexDirection={"column"}
                         alignItems={"center"}
                         justifyContent={"center"}
-                        display={"flex"}
                     >
+
                         <Button
                             h="50px"
                             color="#f38c00"
@@ -318,12 +321,22 @@ const Signin = () => {
                                 color: "black",
                                 bg: "#f38c00",
                             }}
-                            leftIcon={<FaGoogle />}
-                            onClick={signInWithGoogle}
+                            leftIcon={<FaRocket />}
+                            onClick={createPublisher}
+
                         >
-                            Sign in with Google
+                            Publish Collection
                         </Button>
-                    </Box>
+
+
+                        <Divider py={5} />
+
+                        <Box />
+
+                        <Text>Publish Private NFTs and
+                            <br />  invite recipients  to view collection</Text>
+
+                    </VStack>
                 </Box>
             </VStack>
         </Layout>

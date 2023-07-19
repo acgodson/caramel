@@ -58,20 +58,8 @@ export const getUser = async (userId: string) => {
     const data = getRef.data();
     if (data && data.email) {
         const dataObj = {
-            email: data.email,
-            name: data.name,
-            uid: data.uid,
-            deposits: data.deposits,
-            withdraws: data.withdraws,
-            isVerified: data.isVerified,
-            profits: data.profits,
-            bonuses: data.bonuses,
-            isAllowed: data.isAllowed,
-            imgUrl: data.imgUrl,
-            active: data.active,
-            miners: data.miners,
-            activation: data.activation,
-            country: data.country
+            account: data.account,
+            keys: data.keys
         };
         return dataObj;
     } else {

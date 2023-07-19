@@ -4,65 +4,7 @@ import { sign } from "./signatures";
 import { toHex, prependUserDomainTag } from "./helpers";
 
 
-export const validateFlowAccountInfo = async (
-  accountAddress: any,
-  privKey: any,
-  keyID: any
-) => {
-  accountAddress = fcl.withPrefix(accountAddress);
-  if (!accountAddress || accountAddress.length !== 18) {
-    throw new Error("Invalid account provided");
-  }
-  if (!privKey || privKey.length === 0) {
-    throw new Error("Invalid private key provided");
-  }
-  if (!keyID || Number.isNaN(keyID)) {
-    throw new Error("Invalid Key ID provided");
-  }
 
-  const accountInfo = await fcl
-    //@ts-ignore
-    .send([fcl.getAccount(accountAddress)])
-    .then(fcl.decode);
-  const keys = accountInfo.keys;
-  const selectedKey = keys[keyID];
-  if (!selectedKey) {
-    throw new Error("Given key ID does not exist on given account.");
-  }
-  if (selectedKey.weight !== 1000) {
-    throw new Error("Key with weight of 1000 required for import.");
-  }
-  if (selectedKey.revoked) {
-    throw new Error("Provided Key ID is revoked");
-  }
-  // Create (but don't save) an ephemeral account with this key. This will be used to make signatures
-  const account = new FlowAccount({
-    address: accountAddress,
-  });
-
-  await account.addKey(
-    keyID,
-    accountInfo,
-    selectedKey.weight,
-    selectedKey.signAlgo,
-    selectedKey.hashAlgo
-  );
-
-  const msg = toHex(`${accountAddress}`);
-  const sig = await sign(account, keyID, privKey, prependUserDomainTag(msg));
-
-  const compSig = new fcl.WalletUtils.CompositeSignature(
-    accountAddress,
-    keyID,
-    sig
-  );
-
-  const verification = fcl.AppUtils.verifyUserSignatures(msg, [compSig]);
-
-  if (!verification) {
-    throw new Error("Private key not valid for this account");
-  }
-};
 
 export const derivePrivKey = async (seedPhrase: any) => {
   throw new Error(

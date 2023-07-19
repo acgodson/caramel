@@ -5,6 +5,7 @@ import * as fcl from "@onflow/fcl";
 //@ts-ignore
 import * as t from "@onflow/types";
 import FlowAccount from "@/lib/flowAccount";
+import { result } from "lodash";
 var Buffer = require("buffer").Buffer;
 const p256 = new EC("p256");
 const secp256 = new EC("secp256k1");
@@ -12,29 +13,25 @@ const secp256 = new EC("secp256k1");
 // Takes in a msg that is already in hex form, and a
 // hashAlg in flow's key format for hash algorithms
 // Return binary digest
-const hashMsgHex = (msgHex: any, hashAlg: number) => {
-  if (hashAlg === 3) {
+const hashMsgHex = (msgHex: any) => {
+  try {
     const sha = new SHA3(256);
     sha.update(Buffer.from(msgHex, "hex"));
     return sha.digest();
-  } else if (hashAlg === 1) {
-    const md = forge.md.sha256.create();
-    md.update(Buffer.from(msgHex, "hex"));
-    return md.digest();
-  } else {
+  } catch (e) {
     throw new Error("Unsupported hash alg provided");
   }
 };
 
-export const sign = async (account: FlowAccount, keyID: any, privateKey: any, msgHex: any) => {
-  const pubKey = account.getKey(keyID);
-  const ec: any = pubKey.sigAlg === 1 ? p256 : pubKey.sigAlg === 2 ? secp256 : null;
+export const sign = async (privateKey: any, msgHex: any) => {
+  const ec: any = p256;
   const key = ec.keyFromPrivate(Buffer.from(privateKey, "hex"));
-  const sig = key.sign(hashMsgHex(msgHex, pubKey.hashAlg));
+  const sig = key.sign(hashMsgHex(msgHex));
   const n = 32;
   const r = sig.r.toArrayLike(Buffer, "be", n);
   const s = sig.s.toArrayLike(Buffer, "be", n);
-  return Buffer.concat([r, s]).toString("hex");
+  const result = Buffer.concat([r, s]).toString("hex");
+  return result
 };
 
 export const verifyUserSignature = async (
