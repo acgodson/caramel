@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }: ReactNode | any) {
                             borderLeft="2px solid red"
                         >
                             <Stack
-                                minH="100vh"
+                                // minH="100vh"
                                 direction={["column", "column", "row"]}
                                 w="100%"
                                 h="100vh"

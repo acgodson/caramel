@@ -32,12 +32,33 @@ export class MyUserCredential {
   }
 
   static fromJSON(json: {}) {
-    const user  = json;
+    const user = json;
     const myUser = User.fromJSON(user);
     return new MyUserCredential({ user: myUser });
   }
 }
 
+
+
+export function formatWalletAddress(address: string) {
+  if (typeof address !== 'string') {
+    throw new Error('Invalid input: Address must be a string.');
+  }
+
+  // Check if the address starts with '0x'
+  if (address.startsWith('0x')) {
+    return address;
+  } else {
+    // Add '0x' to the beginning of the address
+    return '0x' + address;
+  }
+}
+
+
+
+
+
+//for recipient sign in with firebase
 class User {
   displayName: any | null;
   email: any;
@@ -50,7 +71,7 @@ class User {
   providerData: any;
   tenantId: any;
   uid: any;
-  constructor({  displayName, email, isEmailVerified, isAnonymous, metadata, phoneNumber, providerData, refreshToken, photoURL, tenantId, uid }: any) {
+  constructor({ displayName, email, isEmailVerified, isAnonymous, metadata, phoneNumber, providerData, refreshToken, photoURL, tenantId, uid }: any) {
     this.displayName = displayName;
     this.email = email;
     this.isEmailVerified = isEmailVerified;
@@ -65,7 +86,7 @@ class User {
   }
 
   static fromJSON(json: any) {
-    const {displayName,  email, isEmailVerified, isAnonymous, metadata, phoneNumber,photoURL,  providerData, refreshToken, tenantId, uid } = json;
+    const { displayName, email, isEmailVerified, isAnonymous, metadata, phoneNumber, photoURL, providerData, refreshToken, tenantId, uid } = json;
     return new User({ displayName, email, isEmailVerified, isAnonymous, metadata, phoneNumber, photoURL, providerData, refreshToken, tenantId, uid });
   }
 }

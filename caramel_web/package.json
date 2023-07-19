@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=development node server.js",
     "lint": "next lint"
   },
   "dependencies": {
+    
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.1",

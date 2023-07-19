@@ -49,3 +49,22 @@ export async function checkAddr(addr: string) {
 
 
 
+export async function verifyAddr(addr: string) {
+  const headersList = {
+    "Content-Type": "application/json"
+  };
+
+  const bodyContent = JSON.stringify({ addr });
+
+  const response = await fetch("api/query-user", {
+    method: "POST",
+    body: bodyContent,
+    headers: headersList
+  });
+
+  const data = await response.json();
+  return data;
+}
+
+
+

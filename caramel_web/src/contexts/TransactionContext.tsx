@@ -10,6 +10,7 @@ import { useRouter } from 'next/router.js';
 import crypto from "crypto"
 import { initFirebase } from "@/config";
 import * as fcl from "@onflow/fcl";
+import { config } from "@onflow/fcl";
 
 
 
@@ -20,6 +21,28 @@ export const useTransaction = () => useContext<any>(TransactionContext);
 
 
 initFirebase();
+const configs: any = {
+  flow_mainnet: {
+    accessNode: "https://rest-mainnet.onflow.org",
+    flowNetwork: "mainnet",
+  },
+  flow_testnet: {
+    accessNode: "https://side-still-sanctuary.flow-testnet.quiknode.pro",
+    flowNetwork: "testnet",
+  },
+};
+
+const configureFcl = (network: any) => {
+  const fclConfig = config();
+  fclConfig.put("accessNode.api", configs[network].accessNode);
+  // fclConfig.put("flow.network", configs[network].flowNetwork);
+  fclConfig.put("discovery.wallet", "https://fcl-discovery.onflow.org/testnet/authn");
+  fclConfig.put("discovery.authn.endpoint", "https://fcl-discovery.onflow.org/api/testnet/authn");
+  fclConfig.put("discovery.authn.include", "0x33f75ff0b830dcec");
+  fclConfig.put("app.detail.title", "Caramel");
+  fclConfig.put("app.detail.icon", "https://placekitten.com/g/200/200");
+};
+
 
 export default function TransactionProvider({ children }: any) {
   const [publisher, setPublisher] = useState("");
@@ -143,7 +166,9 @@ export default function TransactionProvider({ children }: any) {
 
   }, [])
 
-
+  useEffect(() => {
+    configureFcl("flow_testnet");
+  }, [])
 
 
   const value = {

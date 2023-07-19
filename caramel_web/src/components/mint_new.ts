@@ -38,10 +38,9 @@ export const authorizationFunction = async (account: any) => {
 export const MintNewNFT = async (addr: string, hash: string) => {
   let transactionId;
   const CODE = mintNFT;
-  console.log(hash);
-  console.log(CODE);
-
-  const name: String = "test images";
+  // console.log(hash);
+  // console.log(CODE);
+  const name = "test images";
   //  imageHash: string,
 
   try {
@@ -51,7 +50,7 @@ export const MintNewNFT = async (addr: string, hash: string) => {
         fcl.args([
           fcl.arg(addr, t.Address),
           fcl.arg(name, t.String),
-          fcl.arg("https://caramel-pi.vercel.app/logo.svf", t.String),
+          fcl.arg("https://caramel-pi.vercel.app/logo.svg", t.String),
           fcl.arg("confidential ", t.String),
           fcl.arg(hash, t.String),
         ]),
