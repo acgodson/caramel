@@ -28,5 +28,20 @@
 10. Recipient: Display the decrypted image.
 
 
-## Overview Flow Blockchain            
+## Flow Blockchain            
+
+| Feature                            | Flow Blockchain                                | Ethereum                                |
+|------------------------------------|-----------------------------------------------|----------------------------------------|
+| Account Model                      | User-centric, offering enhanced security, safety, and recoverability.           | Ethereum accounts follow the externally owned account (EOA) model.                                                                                       |
+| Programming Language           | Cadence, designed for resource-oriented development, enables faster smart contract development and improved on-chain utility.            | Solidity is the primary language used in Ethereum smart contracts. It has a steeper learning curve compared to Cadence.                                                                                              |
+| Scalability                            | Flow's unique sharded architecture enables higher throughput and scalability.       | Ethereum faces scalability challenges, leading to network congestion during peak usage.                                                                                                     |
+| Gas Fees                              | Flow's gas model uses transaction fees based on computation complexity, making it more predictable and cost-effective for users.  | Ethereum uses a gas fee model that can be volatile, especially during periods of network congestion, resulting in higher fees.                                                                   |
+| Consensus Algorithm         | Flow uses the HotStuff consensus algorithm, ensuring faster block confirmation times and improved overall performance.        | Ethereum currently employs a Proof-of-Work (PoW) consensus algorithm, which is resource-intensive and slower compared to HotStuff.                                             |
+| NFT Standard                      | Flow has its own standard for Non-Fungible Tokens (NFTs) called Fungible Token (FT) standard, providing flexibility in token creation and management.   | Ethereum uses the ERC-721 and ERC-1155 standards for NFTs, offering a wide range of tokens but may lack some specific functionalities present in Flow's FT standard. |
+| Developer-Friendly               | Flow's developer tools and documentation facilitate a smoother onboarding experience for developers.            | Ethereum has a vast developer community but can be overwhelming for newcomers due to its complexity and extensive ecosystem.                                                             |
+| Environmental Impact         | Flow's Proof-of-Stake (PoS) mechanism consumes significantly less energy compared to Ethereum's PoW, making it more environmentally friendly. | Ethereum's PoW consensus consumes substantial amounts of energy, leading to environmental concerns.                                                                                                       |
+| Ecosystem Growth               | Flow has a growing ecosystem with partnerships in the entertainment, gaming, and NFT spaces.           | Ethereum's ecosystem is well-established and has the first-mover advantage in the blockchain space.                                                                                                               |
+
+
+
 
