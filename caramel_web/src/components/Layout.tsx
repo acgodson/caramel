@@ -26,7 +26,13 @@ const Layout = ({ children, title }: any) => {
           <Flex direction="row">
             {/* <GoBack shouldShow={withGoBack} /> */}
             <Box flex="1">
-              <Title align="left">{title}</Title>
+              <Box
+                src="/logo.png"
+                as="img"
+                h="100px"
+              />
+
+              {/* <Title align="left">{title}</Title> */}
             </Box>
           </Flex>
           <Box h="20px" />

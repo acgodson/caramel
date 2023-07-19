@@ -18,9 +18,6 @@ export default async function handler(
     const { email } = req.body;
 
     if (email) {
-      //find email by username
-
-      // console.log(username);
       try {
         const fetchUser = admin
           .firestore()
@@ -29,9 +26,7 @@ export default async function handler(
         const querySnapshot = await fetchUser.get();
 
         if (querySnapshot.empty) {
-          // Document doesn't exist, indicating a new user
           console.log("User is new");
-
           return res.status(200).json({ keyExists: false });
         } else {
           // Document exists

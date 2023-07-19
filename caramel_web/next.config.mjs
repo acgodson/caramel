@@ -1,7 +1,4 @@
 /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   reactStrictMode: true,
-// }
 
 import PWA from "next-pwa";
 
@@ -23,15 +20,20 @@ const nextConfig = withPWA({
 
     return config;
   },
-  // images: {
-  //   unoptimized: true,
-  // },
+  images: {
+    unoptimized: true,
+  },
   exportPathMap: function () {
     return {
       "/": { page: "/" },
       "/signin": { page: "/signin" },
       "/home": { page: "/home" },
       "/login-success": { page: "/login-success" },
+      "/api/uploadToBrowser": { page: "/api/uploadToBrowser" },
+      "/api/check-user": { page: "/api/check-user" },
+      "/api/fetch-key": { page: "/api/fetch-key" },
+      "/api/uploadToIPFS": { page: "/api/uploadToIPFS" },
+      "/api/query-user": { page: "/api/query-user" },
     };
   },
 });

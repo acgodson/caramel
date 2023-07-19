@@ -15,7 +15,7 @@ import {
 import Layout from "../components/Layout";
 import { EmailAuthProvider, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { getAuth, signInWithPopup, } from "firebase/auth";
-import { FaGoogle, FaRocket } from "react-icons/fa";
+import { FaDownload, FaExclamationTriangle, FaGithub, FaGoogle, FaRocket } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useCreateAccount } from "@/hooks/createaccount";
 import { account } from "@onflow/fcl";
@@ -307,7 +307,47 @@ const Signin = () => {
                         alignItems={"center"}
                         justifyContent={"center"}
                     >
-                        <Text>Sign in with Flipper extension</Text>
+
+
+                        <br />
+                        <Center>
+                            <Text
+                                fontSize={"semibold"}
+                                color={"gray"}
+                                fontStyle={"italic"}
+                            >Mint Private NFTs on Flow Blockchain...</Text>
+                        </Center>
+
+                        <HStack fontWeight={"bold"}>
+                            <FaExclamationTriangle color="red" />
+                            <Text color={"red"}>      Testnet Demo</Text>
+                        </HStack>
+
+                        <VStack textAlign={"left"} w="100%">
+                            <ol style={{
+                                fontSize: "10px"
+                            }}>
+                                <li>
+                                    <Text fontSize={"xs"}>Choose and install Flipper extension. </Text>
+                                </li>
+                                <li>
+                                    <Text fontSize={"xs"}>Fund your account before proceeding. Get Faucets <span style={{
+                                        color: "blue",
+                                        cursor: "pointer"
+                                    }}
+                                        onClick={() => window.location.href = "https://testnet-faucet.onflow.org/fund-account"}
+                                    >
+                                        here
+                                    </span></Text>
+
+                                </li>
+                            </ol>
+                        </VStack>
+
+
+                        Make sure you account is funded with testnet faucets bofore clicking on publish
+
+                        <br />
 
                         <Button
                             h="50px"
@@ -331,14 +371,48 @@ const Signin = () => {
 
 
                         <Divider py={5} />
-
-                        <Box />
+                        <br />
 
                         <Center>
                             <Text
+                                fontSize={"semibold"}
+                                color={"gray"}
                                 fontStyle={"italic"}
-                            >Mint Private NFT on Flow Blockchain...</Text>
+                            >Receive Private NFTs on Flow Blockchain...</Text>
                         </Center>
+
+
+                        <Button
+                            h="50px"
+                            color="black"
+                            bg="#f38c00"
+                            isLoading={isLoading}
+                            _hover={{
+                                color: "black",
+                                bg: "#f38c00",
+                            }}
+                            _active={{
+                                color: "black",
+                                bg: "#f38c00",
+                            }}
+                            leftIcon={<FaDownload />}
+
+
+                        >
+                            Get Desktop App
+                        </Button>
+
+                        <HStack
+                            py={4}
+                            textStyle={"underline"}
+                            as="a"
+                            href="https://github.com/acgodson/caramel"
+                            target="_blank"
+                        >                 <FaGithub /> <Text>Github</Text></HStack>
+                        <Box />
+
+
+
 
                     </VStack>
                 </Box>

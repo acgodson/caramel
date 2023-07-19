@@ -56,17 +56,15 @@ export default function MyCollection() {
       return
     }
     console.log(publisher)
-    const length = await fcl.send([
+    const list = await fcl.send([
       fcl.script(get_userNFTs),
       fcl.args([
         fcl.arg(publisher.addr, t.Address)
       ]),
     ]).then((fcl.decode))
 
-    if (length) {
-      console.log(length)
-      setCount(length)
-      setNFTs(length)
+    if (list) {
+      setNFTs(list)
     } else {
       setNFTs(0);
     }
@@ -91,7 +89,11 @@ export default function MyCollection() {
     if (!userInput) {
       console.log("no private key found for decryption")
     }
+
+    console.log(NFTs.length)
+    return
     for (let i = 0; i < NFTs.length; i++) {
+
 
       const url = `https://scarlet-warm-anaconda-739.mypinata.cloud/ipfs/${NFTs[i].collectionExternalURL}`;
       let imgs = [];
