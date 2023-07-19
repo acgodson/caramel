@@ -4,7 +4,7 @@
 > Mint and send private  NFTs such as medical imaging on Flow Blockchain for licensed data consumers or recipients.
 
 
-👉 Jump to [Video Demo ]() || 
+👉 Jump to [Video Demo ](https://youtu.be/dY4oADpLZ1s) || 
 📃 [Pitch Deck]()
 
 
@@ -39,8 +39,23 @@
 | Consensus Algorithm         | Flow uses a flavour the HotStuff consensus algorithm, ensuring faster block confirmation times.        | Ethereum currently employs a Proof-of-Work (PoW) consensus algorithm, resource-intensive.                                             |
 | NFT Standard                      | Flow has its own standard for Non-Fungible Tokens (NFTs) and an on-chain metadata view-resolver providing ease and flexibility in token creation and tracking.   | Ethereum uses the ERC-721 and ERC-1155 standards for NFTs, offering a wide range of tokens |                                                         |
 | Environmental Impact         | Flow's Proof-of-Stake (PoS) mechanism consumes significantly less energy compared to Ethereum's PoW, making it more environmentally friendly. | Ethereum's PoW consensus consumes substantial amounts of energy, leading to environmental concerns.                                                                                                       |
-| Ecosystem Growth               | Flow has a growing ecosystem with partnerships in the entertainment, gaming, and NFT spaces.           | Ethereum's ecosystem is well-established and has the first-mover advantage in the blockchain space.                                                                                                               |
+| Ecosystem Growth               | Flow has a growing ecosystem with partnerships in the entertainment, gaming, and NFT spaces with brands like NBA, NFL, Instagram...          | Ethereum's ecosystem is well-established and has the first-mover advantage in the blockchain space.                                                                                                               |
 
 
 
 
+
+
+## Contributors
+@acgodson
+
+
+## Links
+- [Youtube]()
+- [Drive]()
+- [Caramel MacOS]()
+
+
+## References
+- [Flow Developer Docs]()
+- [Flutter for macos]()
