@@ -8,7 +8,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
     <ChakraProvider>
       <TransactionProvider>
-
         <Component {...pageProps} />
       </TransactionProvider>
     </ChakraProvider>

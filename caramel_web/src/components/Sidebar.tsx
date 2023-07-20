@@ -46,6 +46,7 @@ export default function SideBarTab() {
     const [allowMint, setAllowMint] = useState(false)
     const { publisher } = useTransaction()
     const [validRecipient, setValidRecipient] = useState(false)
+    const [fileBuffer, setFileBuffer] = useState<any>("")
     const handleCheckboxChange = () => {
         setIsPrivate(true);
     };
@@ -64,6 +65,18 @@ export default function SideBarTab() {
         console.log(imageSrc);
         setAllowMint(true)
         setImage(imageSrc);
+
+        const fileReader = new FileReader();
+
+        fileReader.onloadend = () => {
+            // Convert the read data (ArrayBuffer) to a buffer
+            const arrayBufferResult = fileReader.result as ArrayBuffer;
+            const buffer = Buffer.from(arrayBufferResult);
+            setFileBuffer(buffer.toString());
+        };
+
+        fileReader.readAsArrayBuffer(imageSrc);
+
     }, [fileRef]);
 
     const handleToggleDropdown = () => {
@@ -89,7 +102,7 @@ export default function SideBarTab() {
     }
 
 
-    const MintForUser = async (addr: string, formData: FormData,) => {
+    const MintForUser = async (addr: string) => {
         let imageHash;
         let metadataHash;
         let tx;
@@ -104,18 +117,23 @@ export default function SideBarTab() {
         const publicKey = accountInfo.keys[0].publicKey;
         if (publicKey) {
             try {
-                const response: any = await axios.post('/api/uploadToBrowser', formData, { headers: { 'content-type': 'multipart/form-data' } },)
-                if (response) {
-                    const { buffer, mimeType, filename } = response.data
+                if (fileBuffer) {
+                    const buffer = fileBuffer
+                    const filename = image.name;
+                    const mimeType = image.type;
+                    console.log(filename.toString())
+                    console.log(mimeType.toString())
                     const p256 = new EC('p256');
                     const uncompressedPublicKey = "04" + publicKey;
                     const pubKey = p256.keyFromPublic(uncompressedPublicKey, "hex").getPublic();
                     const encryptedMsg = encryptECC(buffer, pubKey);
+               
                     const { ciphertext, iv, authTag, ciphertextPubKey, hex } = encryptedMsg
+                  
                     const cipherObj = {
                         ciphertext, iv, authTag, hex: hex
                     }
-                    let pinataResponse = await fetch("/api/uploadToIPFS", {
+                    let pinataResponse = await fetch("/api/upload", {
                         method: "POST",
                         body: JSON.stringify({
                             object: cipherObj,
@@ -143,7 +161,7 @@ export default function SideBarTab() {
                             name: filename,
                         });
 
-                        let metadataResponse = await fetch("/api/uploadToIPFS", {
+                        let metadataResponse = await fetch("/api/upload", {
                             method: "POST",
                             body: bodyContent,
                             headers: { "Content-Type": "application/json" }
@@ -185,13 +203,10 @@ export default function SideBarTab() {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('img', image);
-
         const to = send ? receiver : publisher.addr
 
         setisEncryptingImage(true)
-        const transaction = await MintForUser(to, formData)
+        const transaction = await MintForUser(to)
         if (transaction) {
             setisEncryptingImage(false)
         }
@@ -293,13 +308,6 @@ export default function SideBarTab() {
                             <Text mt={2}>{item.label}</Text>
                         </Box></Tab>
                 ))}
-
-
-
-
-
-
-
                 <Button
                     h="44px"
                     onClick={async () => {
@@ -308,13 +316,6 @@ export default function SideBarTab() {
                         router.push("/signin")
                     }}
                 >Sign out</Button>
-
-
-
-
-
-
-
             </TabList >
 
 

@@ -1,32 +1,24 @@
 
-import { VStack, Box, Text, InputGroup, InputLeftElement, Input, Button, useToast, Divider, FormControl, FormLabel, Heading, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Grid, Center, HStack, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Flex, IconButton, Spinner, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Box, Text, Button, TabPanel, TabPanels, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import * as fcl from "@onflow/fcl";
-import { useContext, useEffect, useState } from 'react';
-import { FaMoneyBillWave, FaGift, FaChartLine, FaUsers, FaMoneyCheckAlt } from "react-icons/fa";
+import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import TransactionContext, { useTransaction } from '@/contexts/TransactionContext';
+import { useTransaction } from '@/contexts/TransactionContext';
 import DashboardLayout from '@/layout/dashboardLayout';
 import { getAuth } from 'firebase/auth';
 import MyCollection from '@/components/mycollection';
-import { Layout } from 'react-grid-layout';
-
-
-
-
 export default function Home() {
     const { user, publisher }: any = useTransaction()
-    const [isOpen, setIsOpen] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState("");
-    const [walletAddresses, setWalletAddresses] = useState<any[] | null>(null)
-
+    const [contractAddresses, setcontractAddresses] = useState<any[] | null>(null)
+    const auth = getAuth();
+    const router = useRouter();
 
     const handleAddressSelect = (address: string) => {
         setSelectedAddress(address);
     };
 
-    const auth = getAuth();
-    const router = useRouter();
 
     //   Listen to UnAuthStateChange
     useEffect(() => {
@@ -44,14 +36,14 @@ export default function Home() {
             .then(fcl.decode);
         if (accountInfo) {
             const keys = Object.keys(accountInfo.contracts)[2]
-            setWalletAddresses([keys])
+            setcontractAddresses([keys])
         }
 
         return accountInfo
     }
 
     useEffect(() => {
-        if (!walletAddresses) {
+        if (!contractAddresses) {
             getCollections()
 
         }
@@ -65,9 +57,7 @@ export default function Home() {
 
             {user || publisher.addr && (
                 <DashboardLayout >
-                    {/* main home content will fit here */}
                     <Box w="100%">
-
                         <TabPanels p={0}>
                             <TabPanel
                                 w="100%"
@@ -94,7 +84,7 @@ export default function Home() {
                                                 )}
                                             </MenuButton>
                                             <MenuList>
-                                                {walletAddresses && walletAddresses.map((address, index) => (
+                                                {contractAddresses && contractAddresses.map((address, index) => (
                                                     <MenuItem key={index} onClick={() => handleAddressSelect(address)}>
                                                         {address}
                                                     </MenuItem>
@@ -107,7 +97,6 @@ export default function Home() {
                                 <Box w="100%" mt="100px" h="100vh">
                                     <MyCollection />
                                 </Box>
-
 
                             </TabPanel>
                             <TabPanel minH="375px">

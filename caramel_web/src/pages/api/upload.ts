@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import pinataSDK, { PinataPinOptions } from "@pinata/sdk";
 import { pinataKeys } from "@/components/controllers/accounts";
 
+//for testing, move to env in production
 const PINATA_API_KEY = pinataKeys.pinataKey;
 const PINATA_API_SECRET = pinataKeys.Secret;
 

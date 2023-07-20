@@ -386,7 +386,6 @@ const Signin = () => {
                             h="50px"
                             color="black"
                             bg="#f38c00"
-                            isLoading={isLoading}
                             _hover={{
                                 color: "black",
                                 bg: "#f38c00",
