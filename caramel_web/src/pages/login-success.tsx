@@ -7,9 +7,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 const LoginSuccess = () => {
-    const toast = useToast();
     const router = useRouter();
-    const [address, setAddress] = useState<any>("");
     const [accessToken, setAccessToken] = useState<any>("");
     const [idToken, setIdToken] = useState<any>("");
     const [account, setAccount] = useState<any>("");
@@ -19,19 +17,9 @@ const LoginSuccess = () => {
     const [signatureAlgorithm, setSignatureAlgorithm] = useState<any>("");
     const [hashAlgorithm, setHashAlgorithm] = useState<any>("");
 
-    useEffect(() => {
-        const query = router.query;
-        const {
-            accessToken,
-            idToken,
-            account,
-            creationTxId,
-            publicKey,
-            privateKey,
-            signatureAlgorithm,
-            hashAlgorithm,
-        } = query;
 
+    useEffect(() => {
+        const { accessToken, idToken, account, creationTxId, publicKey, privateKey, signatureAlgorithm, hashAlgorithm, } = router.query;
         setAccessToken(accessToken || "");
         setIdToken(idToken || "");
         setAccount(account || "");
@@ -40,9 +28,6 @@ const LoginSuccess = () => {
         setPrivateKey(privateKey || "");
         setSignatureAlgorithm(signatureAlgorithm || "");
         setHashAlgorithm(hashAlgorithm || "");
-
-        // Optional: Handle missing query parameters or error cases
-
     }, []);
 
     return (
@@ -111,7 +96,11 @@ const LoginSuccess = () => {
                                     color: "black",
                                     bg: "#f38c00",
                                 }}
-                                onClick={() => router.push("/home")}
+                                onClick={() => {
+                                    //TODO: remeber to save url parameters in native app
+                                    router.push("/home")
+                                }
+                                }
                             >
                                 Continue
                             </Button>

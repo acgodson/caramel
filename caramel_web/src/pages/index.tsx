@@ -15,7 +15,6 @@ export default function Index() {
     return () => clearTimeout(timer);
   }, []);
 
-
   return (
     <>
 
@@ -34,37 +33,10 @@ export default function Index() {
         </Box>
       )}
 
-
       {!isLoading && (
 
         <Home />
       )}
-
-
-
-
-
-
-      {/* <Box
-        bg="blackAlpha.900"
-        w="100%"
-        top={0}
-        zIndex="tooltip"
-        position={"fixed"}
-        display="flex"
-        flexDirection={"column"}
-        alignItems="center"
-        justifyContent={"center"}
-        h={"100vh"}>
-        <Box
-          h="auto"
-          w="300px"
-        >
-          <Lottie animationData={pause} loop={true} />
-        </Box>
-
-      </Box> */}
-
     </>
   );
 

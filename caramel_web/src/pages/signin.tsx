@@ -1,269 +1,30 @@
-import React, { useEffect, useState } from "react";
-import {
-    useToast,
-    Box,
-    VStack,
-    Center,
-    Text,
-    Flex,
-    Icon,
-    Button,
-    HStack,
-    Spinner,
-    Divider,
-} from "@chakra-ui/react";
-import Layout from "../components/Layout";
-import { EmailAuthProvider, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import { getAuth, signInWithPopup, } from "firebase/auth";
-import { FaDownload, FaExclamationTriangle, FaGithub, FaGoogle, FaRocket } from "react-icons/fa";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import { Box, VStack, Center, Text, Button, HStack, Spinner, Divider } from "@chakra-ui/react";
+import { FaDownload, FaExclamationTriangle, FaGithub, FaRocket } from "react-icons/fa";
+import Layout from "@/components/Layout";
 import { useCreateAccount } from "@/hooks/createaccount";
-import { account } from "@onflow/fcl";
-import { useTransaction } from "@/contexts/TransactionContext";
-import { createUser } from "@/db/firestore";
-import { checkUserExists } from "@/components/controllers/authz";
-import { AES } from "crypto-js";
-import { MyUserCredential } from "@/components/controllers/helpers";
+import { useSignInReciever } from "@/hooks/signin_reciever";
 
 
-
-
-const auth = getAuth();
 
 const Signin = () => {
-    const toast = useToast();
     const router = useRouter()
-    const [loading, setLoading] = useState(false);
-    const { status, isLoading, createAccount, createPublisher } = useCreateAccount()
-    const { setDefaultAccount, mapUserData, setUserCookie, setUserObject } = useTransaction();
+    const { isLoading, createPublisher } = useCreateAccount()
+    const { signWithCredential, loading } = useSignInReciever()
+
 
     useEffect(() => {
         setTimeout(() => {
             const appParam: any = router.query._user;
             if (appParam && !loading) {
-                const { _user, password } = router.query;
-                //@ts-ignore
+                const { _user, password }: any = router.query;
                 signWithCredential(_user, password);
             }
-        }, 10); // Adjust the delay as needed
+        }, 10);
     },);
 
 
-    const signInWithGoogle = async () => {
-        setLoading(true);
-        try {
-            const provider = new GoogleAuthProvider();
-            const auth = getAuth();
-            signInWithPopup(auth, provider).then(async (result) => {
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-
-                if (credential) {
-                    const accessToken = credential.accessToken;
-                    const idToken = credential.idToken;
-                    const user = result.user;
-                    const userData = await mapUserData(user);
-                    setUserCookie(userData);
-
-                    const { keyExists, snapshot } = await checkUserExists(user.email!);
-
-                    if (keyExists) {
-                        localStorage.setItem("caramel-user", JSON.stringify(snapshot));
-                        setUserObject(snapshot);
-                        // retrieve  keys from local storage
-
-                        // take user to home
-                        router.push("home");
-                    } else {
-                        // Prompt user to enter password
-                        const password = window.prompt("Enter Chosen password:");
-
-                        if (password) {
-
-                            const {
-                                account,
-                                creationTxId,
-                                publicKey,
-                                privateKey,
-                                signatureAlgorithm,
-                                hashAlgorithm,
-                            } = await createAccount();
-
-                            console.log(privateKey)
-
-                            // Encrypt the private key using the password and private nonce
-                            const encryptedPrivateKey = AES.encrypt(privateKey, password).toString();
-
-
-                            if (account) {
-                                setDefaultAccount(account);
-                                const dbObj = {
-                                    email: user.email,
-                                    default: 0,
-                                    account,
-                                    creationTxId,
-                                    keys: [
-                                        {
-                                            pubKey: publicKey,
-                                            privkey: encryptedPrivateKey,
-                                            signatureAlgorithm,
-                                            hashAlgorithm,
-                                        },
-                                    ],
-                                };
-
-                                await createUser(user.uid!, dbObj);
-                                localStorage.setItem("caramel-user", JSON.stringify(dbObj));
-                                setUserObject(dbObj);
-                            }
-
-                            const signInObj: any = {
-                                accessToken,
-                                idToken,
-                                account,
-                                creationTxId,
-                                publicKey,
-                                encryptedPrivateKey,
-                                signatureAlgorithm,
-                                hashAlgorithm,
-                            };
-
-                            const queryString = new URLSearchParams(signInObj).toString();
-                            const routeUrl = `/login-success?${queryString}`;
-                            router.push(routeUrl);
-                        }
-                    }
-                }
-
-
-
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-        } catch (error: any) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            setLoading(false);
-            toast({
-                title: errorMessage,
-                status: "error",
-            });
-        }
-    };
-
-    const signWithCredential = async (_user: any, password: string) => {
-        setLoading(true)
-        //signing in with user credental
-        const auth = getAuth();
-
-        console.log(_user.email,)
-        // Extract the necessary properties from the string
-        const regex = /(\w+):\s?([^),]+)/g;
-        let match;
-        const userData: any = {};
-        while ((match = regex.exec(_user))) {
-            const key = match[1];
-            const value = match[2];
-
-            userData[key] = value;
-        }
-        const userJSON = JSON.stringify(userData);
-        const myUserCredential: any = MyUserCredential.fromJSON(JSON.parse(userJSON));
-        const Authcredential = EmailAuthProvider.credential(
-            myUserCredential.user.email,
-            password
-        )
-        const credential: any = await signInWithCredential(auth, Authcredential);
-        console.log("user from credentials;", credential);
-
-        if (credential) {
-            const accessToken = credential.user.accessToken;
-            const idToken = credential.user.idToken;
-            const user = credential.user;
-            const userData = await mapUserData(user);
-            setUserCookie(userData);
-
-            const { keyExists, snapshot } = await checkUserExists(user.email!);
-
-            if (keyExists) {
-                localStorage.setItem("caramel-user", JSON.stringify(snapshot));
-                setUserObject(snapshot);
-                // retrieve  keys from local storage
-
-                // take user to home
-                router.push("home");
-            } else {
-                // Prompt user to enter password
-                // const password = window.prompt("Enter your password:");
-
-
-                const {
-                    account,
-                    creationTxId,
-                    publicKey,
-                    privateKey,
-                    signatureAlgorithm,
-                    hashAlgorithm,
-                } = await createAccount();
-
-                // Encrypt the private key using the password and private nonce
-                const encryptedPrivateKey = AES.encrypt(privateKey, password).toString();
-
-
-                if (account) {
-                    setDefaultAccount(account);
-                    const dbObj = {
-                        email: user.email,
-                        default: 0,
-                        account,
-                        creationTxId,
-                        keys: [
-                            {
-                                pubKey: publicKey,
-                                privkey: encryptedPrivateKey,
-                                signatureAlgorithm,
-                                hashAlgorithm,
-                            },
-                        ],
-                    };
-
-                    await createUser(user.uid!, dbObj);
-                    localStorage.setItem("caramel-user", JSON.stringify(dbObj));
-                    setUserObject(dbObj);
-                }
-
-                const signInObj: any = {
-                    accessToken,
-                    idToken,
-                    account,
-                    creationTxId,
-                    publicKey,
-                    encryptedPrivateKey,
-                    signatureAlgorithm,
-                    hashAlgorithm,
-                };
-
-                const queryString = new URLSearchParams(signInObj).toString();
-                const routeUrl = `/login-success?${queryString}`;
-                router.push(routeUrl);
-
-            }
-        }
-
-
-
-    };
-
-
-    const signInWihDiscovery = () => {
-    }
 
 
     if (loading) {
@@ -344,7 +105,6 @@ const Signin = () => {
                             </ol>
                         </VStack>
 
-
                         Make sure you account is funded with testnet faucets bofore clicking on publish
 
                         <br />
@@ -394,9 +154,8 @@ const Signin = () => {
                                 color: "black",
                                 bg: "#f38c00",
                             }}
+                            onClick={() => window.location.href = "https://github.com/acgodson/caramel"}
                             leftIcon={<FaDownload />}
-
-
                         >
                             Get Desktop App
                         </Button>
@@ -407,12 +166,8 @@ const Signin = () => {
                             as="a"
                             href="https://github.com/acgodson/caramel"
                             target="_blank"
-                        >                 <FaGithub /> <Text>Github</Text></HStack>
+                        >   <FaGithub /> <Text>Github</Text></HStack>
                         <Box />
-
-
-
-
                     </VStack>
                 </Box>
             </VStack>

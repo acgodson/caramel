@@ -1,7 +1,6 @@
 import admin from "firebase-admin";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-// Load Firebase service account JSON file from environment variable
 const serviceAccount = require("./caramelplugin.json");
 
 if (!admin.apps.length) {
@@ -18,9 +17,6 @@ export default async function handler(
     const { email } = req.body;
 
     if (email) {
-      //find email by username
-
-      // console.log(username);
       try {
         const fetchUser = admin
           .firestore()

@@ -1,13 +1,13 @@
-
+import { getAuth } from 'firebase/auth';
 import { Box, Text, Button, TabPanel, TabPanels, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import * as fcl from "@onflow/fcl";
-import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useTransaction } from '@/contexts/TransactionContext';
 import DashboardLayout from '@/layout/dashboardLayout';
-import { getAuth } from 'firebase/auth';
 import MyCollection from '@/components/mycollection';
+
 export default function Home() {
     const { user, publisher }: any = useTransaction()
     const [selectedAddress, setSelectedAddress] = useState("");
@@ -18,7 +18,6 @@ export default function Home() {
     const handleAddressSelect = (address: string) => {
         setSelectedAddress(address);
     };
-
 
     //   Listen to UnAuthStateChange
     useEffect(() => {
@@ -32,7 +31,7 @@ export default function Home() {
     async function getCollections() {
         const accountInfo = await fcl
             //@ts-ignore
-            .send([fcl.getAccount("df37aa208c406ec8")])
+            .send([fcl.getAccount("df37aa208c406ec8")]) //contract account
             .then(fcl.decode);
         if (accountInfo) {
             const keys = Object.keys(accountInfo.contracts)[2]
@@ -41,20 +40,15 @@ export default function Home() {
 
         return accountInfo
     }
-
     useEffect(() => {
         if (!contractAddresses) {
             getCollections()
-
         }
     },)
-
-
 
     return (
 
         <>
-
             {user || publisher.addr && (
                 <DashboardLayout >
                     <Box w="100%">

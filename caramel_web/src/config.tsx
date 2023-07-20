@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 
+//keys are exposed for testing period
 const firebaseConfig = {
     apiKey: "AIzaSyAM5msm1T2lAgyBsNlFdsnhUP5s3q4y1CY",
     authDomain: "caramelplugin.firebaseapp.com",
