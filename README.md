@@ -4,15 +4,14 @@
 > Mint and send private  NFTs such as medical imaging on Flow Blockchain for licensed data consumers or recipients.
 
 
-👉 Jump to [Video Demo ](https://youtu.be/dY4oADpLZ1s) || 
-📃 [Pitch Deck]()
+👉 Jump to [Video Demo ](https://youtu.be/dY4oADpLZ1s) 
 
 
 ## Caramel Workflow
 
 - [x] [Desktop/Hard Wallet]() -- > Recipient
 - [x] [Web dAPP]() -- > Publisher or Sender
-- [ ]  [JS service]() -- > Developer SDK
+- [ ] [JS service]() -- > Developer SDK
 
 ![flow](caramel_web/public/flow.png)
 
@@ -51,7 +50,7 @@
 
 
 ## Links
-- [Youtube]()
+- [Youtube](https://youtu.be/dY4oADpLZ1s)
 - [Drive]()
 - [Caramel MacOS]()
 
