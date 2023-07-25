@@ -1,0 +1,22 @@
+{
+  "name": "caramel-js",
+  "version": "0.0.2",
+  "description": "tools for encrypting nft metadata",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/elliptic": "^6.4.14",
+    "@types/node": "^20.4.4",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "elliptic": "^6.5.4"
+  }
+}
